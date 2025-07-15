@@ -48,17 +48,7 @@ export default function Home() {
   const [categoria, setCategoria] = useState("");
   const [laboratorio, setLaboratorio] = useState("");
   const [ordenPrecio, setOrdenPrecio] = useState(""); // "asc", "desc" o ""
-
-  // Estado de visibilidad de filtros (plegable)
-  const [showFilters, setShowFilters] = useState(window.innerWidth > 1400);
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth > 1400) setShowFilters(true);
-      else setShowFilters(false);
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  const [showFilters, setShowFilters] = useState(false);
 
   useEffect(() => {
     fetch("productosProfar.json")
@@ -144,31 +134,15 @@ export default function Home() {
             }}
           />
         </div>
-      </div>
-      {/* Botón de mostrar filtros */}
-      {!showFilters && (
-        <button className="toggle-filters" onClick={() => setShowFilters(true)}>
-          &#9776; Filtros
+
+        {/* Barra azul "Filtros" */}
+        <button className="filtros-barra" onClick={() => setShowFilters(s => !s)}>
+          <span style={{ fontSize: 20, marginRight: 8 }}>☰</span> Filtros
         </button>
-      )}
-      <div className="main-content">
-        {/* Sidebar lateral de filtros */}
+
+        {/* Panel de filtros (horizontal, debajo de barra) */}
         {showFilters && (
-          <aside className="aside-filters">
-            <button
-              className="close-filters"
-              onClick={() => setShowFilters(false)}
-              title="Cerrar filtros"
-              style={{
-                display: window.innerWidth > 1400 ? "none" : "block",
-                alignSelf: 'flex-end',
-                marginBottom: 8,
-              }}
-            >×</button>
-            <div className="filters-title">
-              Filtrar por:
-            </div>
-            {/* Filtro Categoría */}
+          <div className="panel-filtros">
             <div>
               <label className="filters-label">Categoría</label>
               <select
@@ -182,7 +156,6 @@ export default function Home() {
                 ))}
               </select>
             </div>
-            {/* Filtro Laboratorio */}
             <div>
               <label className="filters-label">Laboratorio</label>
               <select
@@ -196,7 +169,6 @@ export default function Home() {
                 ))}
               </select>
             </div>
-            {/* Filtro Precio */}
             <div>
               <label className="filters-label">Precio</label>
               <select
@@ -209,7 +181,6 @@ export default function Home() {
                 <option value="desc">Mayor a menor</option>
               </select>
             </div>
-            {/* Botón limpiar */}
             {(categoria || laboratorio || ordenPrecio) && (
               <button
                 className="filters-clear"
@@ -222,9 +193,15 @@ export default function Home() {
                 Limpiar filtros
               </button>
             )}
-          </aside>
+            <button className="cerrar-filtros" onClick={() => setShowFilters(false)}>
+              Cerrar ✕
+            </button>
+          </div>
         )}
-        {/* Contenido principal */}
+      </div>
+
+      {/* Contenido principal */}
+      <div className="main-content">
         <div style={{
           flex: 1,
           padding: "36px 0 0 0",
