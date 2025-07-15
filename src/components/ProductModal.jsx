@@ -10,19 +10,8 @@ export default function ProductModal({ product, onClose, alternativas = [], onAl
     <div
       className="modal-overlay"
       onClick={onClose}
-      style={{
-        position: "fixed",
-        inset: 0,
-        background: "rgba(22,36,48,0.19)",
-        zIndex: 9000,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        minHeight: "100vh",
-      }}
     >
       <div
-        onClick={e => e.stopPropagation()}
         style={{
           display: "flex",
           flexDirection: "row",
@@ -34,27 +23,10 @@ export default function ProductModal({ product, onClose, alternativas = [], onAl
           boxShadow: "0 8px 36px rgba(0,0,0,.15)",
           background: "none"
         }}
+        onClick={e => e.stopPropagation()}
       >
         {/* MODAL IZQUIERDA */}
-        <div
-          className="modal-content"
-          style={{
-            background: "#fff",
-            borderRadius: "30px 0 0 30px",
-            width: 420,
-            maxWidth: "96vw",
-            padding: 44,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            position: "relative",
-            minHeight: 0,
-            maxHeight: "90vh",
-            overflowY: "auto",
-            boxShadow: "none",
-            borderRight: "none"
-          }}
-        >
+        <div className="modal-content">
           <button
             style={{
               position: "absolute",
@@ -84,7 +56,7 @@ export default function ProductModal({ product, onClose, alternativas = [], onAl
               display: "block",
               borderRadius: 12,
               boxShadow: "0 2px 10px rgba(0,0,0,0.09)",
-              background: "#fff", // BLANCO para fondo neutro
+              background: "#fff",
             }}
             onError={e => (e.target.src = "logo.png")}
           />

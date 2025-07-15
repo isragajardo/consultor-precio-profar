@@ -10,27 +10,13 @@ export default function ProductCard({ product, onClick }) {
     <div
       className="product-card"
       onClick={() => onClick(product)}
-      style={{
-        background: "#fff",
-        borderRadius: 16,
-        boxShadow: "0 2px 12px rgba(0,0,0,.08)",
-        padding: 18,
-        cursor: "pointer",
-        transition: "transform .1s",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        minHeight: 340,
-        maxWidth: 300,
-        margin: "0 auto",
-      }}
     >
       {/* Imagen */}
       <div
         style={{
           height: 98,
           width: 120,
-          background: "#fff", // Fondo blanco puro
+          background: "#fff",
           borderRadius: 10,
           marginBottom: 8,
           display: "flex",
@@ -61,7 +47,7 @@ export default function ProductCard({ product, onClick }) {
           margin: "6px 0 3px 0",
           textAlign: "center",
           color: "#232e38",
-          lineHeight: 1.18
+          lineHeight: 1.18,
         }}
       >
         {product.nombre}
@@ -125,7 +111,7 @@ export default function ProductCard({ product, onClick }) {
           color: "#00a4e8",
           fontWeight: 800,
           margin: "3px 0 0",
-          letterSpacing: "-1px"
+          letterSpacing: "-1px",
         }}
       >
         ${" "}

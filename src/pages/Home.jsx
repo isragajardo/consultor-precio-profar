@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import ProductGrid from "../components/ProductGrid";
 import SearchBar from "../components/SearchBar";
-import ProductModal from "../components/ProductModal"
+import ProductModal from "../components/ProductModal";
 import ClaimModal from "../components/ClaimModal";
 
 const PAGE_SIZE = 50;
@@ -136,32 +136,13 @@ export default function Home() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "#f7fafc" }}>
+    <div className="App">
       {/* HEADER sticky arriba */}
-      <div
-        style={{
-          position: "sticky",
-          top: 0,
-          left: 0,
-          zIndex: 101,
-          width: "100%",
-          background: "#f7fafc",
-          boxShadow: "0 1px 8px 0 rgba(0,0,0,0.05)",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          padding: "12px 0 8px 0"
-        }}
-      >
+      <div className="header-sticky">
         <img
           src="logo.png"
           className="logo-header"
           alt="Profar Consultor"
-          style={{
-            maxWidth: 160,
-            margin: "0 auto 6px",
-            display: "block"
-          }}
         />
         <div style={{ width: "100%", maxWidth: 500, margin: "0 auto" }}>
           <SearchBar
@@ -174,25 +155,9 @@ export default function Home() {
         </div>
       </div>
       {/* Layout principal: sidebar + contenido */}
-      <div style={{ display: "flex", maxWidth: 1600, margin: "0 auto", alignItems: "flex-start" }}>
+      <div className="main-content">
         {/* Sidebar lateral de filtros */}
-        <aside
-          style={{
-            width: 210,
-            minWidth: 170,
-            background: "#f4f7fa",
-            borderRight: "1px solid #e6ecf2",
-            padding: "28px 14px 20px 16px",
-            boxSizing: "border-box",
-            display: "flex",
-            flexDirection: "column",
-            gap: 18,
-            position: "sticky",
-            top: 104, // para dejar debajo del header sticky
-            height: "calc(100vh - 104px)",
-            zIndex: 100
-          }}
-        >
+        <aside className="aside-filters">
           <div style={{ fontWeight: 700, fontSize: 18, marginBottom: 10, color: "#238" }}>
             Filtrar por:
           </div>
@@ -299,7 +264,7 @@ export default function Home() {
           <ProductGrid products={paginated} onProductClick={setModalProduct} />
 
           {/* Paginador */}
-          <div style={{ textAlign: "center", marginTop: 28 }}>
+          <div className="paginator">
             {page > 1 && (
               <button onClick={() => setPage(page - 1)}>Anterior</button>
             )}
@@ -307,16 +272,7 @@ export default function Home() {
               <button
                 key={i + 1}
                 onClick={() => setPage(i + 1)}
-                style={{
-                  margin: "0 3px",
-                  fontWeight: page === i + 1 ? 700 : 400,
-                  background: page === i + 1 ? "#00a4e8" : "#fff",
-                  color: page === i + 1 ? "#fff" : "#444",
-                  border: "1px solid #00a4e8",
-                  borderRadius: 6,
-                  padding: "5px 12px",
-                  cursor: "pointer",
-                }}
+                className={page === i + 1 ? "active" : ""}
               >
                 {i + 1}
               </button>

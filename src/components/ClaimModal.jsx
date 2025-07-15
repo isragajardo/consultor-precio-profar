@@ -7,7 +7,6 @@ export default function ClaimModal({ onClose }) {
         className="modal-content"
         onClick={e => e.stopPropagation()}
         style={{
-          background: "#fff",
           borderRadius: 20,
           maxWidth: 480,
           margin: "60px auto",
