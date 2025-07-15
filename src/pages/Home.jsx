@@ -37,6 +37,23 @@ function sortProducts(a, b) {
   return a.nombreFantasia.localeCompare(b.nombreFantasia, "es", { sensitivity: "base" });
 }
 
+function getPaginationPages(page, pageCount) {
+  // Siempre muestra la primera y última página, y dos a cada lado de la actual
+  const pages = [];
+  if (pageCount <= 7) {
+    for (let i = 1; i <= pageCount; i++) pages.push(i);
+    return pages;
+  }
+  pages.push(1);
+  if (page > 4) pages.push("...");
+  for (let i = Math.max(2, page - 2); i <= Math.min(pageCount - 1, page + 2); i++) {
+    pages.push(i);
+  }
+  if (page < pageCount - 3) pages.push("...");
+  pages.push(pageCount);
+  return pages;
+}
+
 export default function Home() {
   const [products, setProducts] = useState([]);
   const [query, setQuery] = useState("");
@@ -119,6 +136,9 @@ export default function Home() {
     setModalProduct(altProduct);
     setTimeout(() => window.scrollTo(0, 0), 100);
   };
+
+  // ---- PAGINADOR ----
+  const paginationPages = getPaginationPages(page, pageCount);
 
   return (
     <div className="App">
@@ -213,19 +233,23 @@ export default function Home() {
           {/* Grilla de productos */}
           <ProductGrid products={paginated} onProductClick={setModalProduct} />
 
-          {/* Paginador */}
+          {/* Paginador ACOTADO */}
           <div className="paginator">
             {page > 1 && (
               <button onClick={() => setPage(page - 1)}>Anterior</button>
             )}
-            {Array.from({ length: pageCount }, (_, i) => (
-              <button
-                key={i + 1}
-                onClick={() => setPage(i + 1)}
-                className={page === i + 1 ? "active" : ""}
-              >
-                {i + 1}
-              </button>
+            {paginationPages.map((p, i) => (
+              p === "..."
+                ? <span key={`dots-${i}`} style={{ margin: "0 5px" }}>...</span>
+                : (
+                  <button
+                    key={p}
+                    onClick={() => setPage(p)}
+                    className={page === p ? "active" : ""}
+                  >
+                    {p}
+                  </button>
+                )
             ))}
             {page < pageCount && (
               <button onClick={() => setPage(page + 1)}>Siguiente</button>
