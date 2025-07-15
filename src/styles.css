@@ -16,13 +16,7 @@ body {
   display: block;
 }
 
-@media (max-width: 600px) {
-  .logo-header {
-    width: 130px;
-    margin: 24px auto 0 auto;
-  }
-}
-
+/* Main layout */
 .main-content {
   max-width: 1100px;
   margin: 30px auto;
@@ -33,25 +27,7 @@ body {
   align-items: flex-start;
 }
 
-@media (max-width: 900px) {
-  .main-content {
-    max-width: 99vw;
-    gap: 12px;
-    padding: 10px 2vw;
-  }
-}
-
-@media (max-width: 600px) {
-  .main-content {
-    flex-direction: column;
-    align-items: stretch;
-    padding: 0 2vw;
-    margin: 14px auto 6px auto;
-    gap: 8px;
-    max-width: 100vw;
-  }
-}
-
+/* Sidebar de filtros */
 .aside-filters {
   width: 210px;
   min-width: 170px;
@@ -68,15 +44,32 @@ body {
   z-index: 100;
 }
 
+/* Responsive main-content y aside */
 @media (max-width: 900px) {
+  .main-content {
+    max-width: 99vw;
+    gap: 12px;
+    padding: 10px 2vw;
+  }
   .aside-filters {
     min-width: 130px;
     padding: 16px 6px 12px 6px;
     gap: 11px;
   }
 }
-
 @media (max-width: 600px) {
+  .logo-header {
+    width: 130px;
+    margin: 24px auto 0 auto;
+  }
+  .main-content {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0 2vw;
+    margin: 14px auto 6px auto;
+    gap: 8px;
+    max-width: 100vw;
+  }
   .aside-filters {
     width: 100vw;
     min-width: 0;
@@ -92,7 +85,7 @@ body {
   }
 }
 
-/* Responsive grilla productos */
+/* Grilla de productos */
 .product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -102,7 +95,6 @@ body {
   max-width: 1260px;
   box-sizing: border-box;
 }
-
 @media (max-width: 900px) {
   .product-grid {
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -110,7 +102,6 @@ body {
     max-width: 99vw;
   }
 }
-
 @media (max-width: 600px) {
   .product-grid {
     grid-template-columns: repeat(auto-fit, minmax(144px, 1fr));
@@ -119,6 +110,7 @@ body {
   }
 }
 
+/* Tarjetas de producto */
 .product-card {
   background: #fff;
   border-radius: 16px;
@@ -133,7 +125,6 @@ body {
   max-width: 300px;
   margin: 0 auto;
 }
-
 @media (max-width: 900px) {
   .product-card {
     min-height: 270px;
@@ -152,6 +143,7 @@ body {
   }
 }
 
+/* Modal principal */
 .modal-overlay {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -178,7 +170,6 @@ body {
   box-shadow: none;
   border-right: none;
 }
-
 @media (max-width: 900px) {
   .modal-content {
     border-radius: 19px 0 0 19px;
@@ -186,13 +177,48 @@ body {
     padding: 22px;
   }
 }
-@media (max-width: 600px) {
+/* --- MODAL RESPONSIVE FIX --- */
+@media (max-width: 700px) {
+  .modal-overlay {
+    align-items: flex-start !important;
+    padding-top: 18px !important;
+  }
+  .modal-flex-row {
+    flex-direction: column !important;
+    max-width: 98vw !important;
+    min-width: 0 !important;
+    width: 98vw !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 16px rgba(0,0,0,.13);
+    min-height: 0 !important;
+    max-height: 99vh !important;
+    height: auto !important;
+  }
   .modal-content {
     border-radius: 17px !important;
-    width: 96vw !important;
-    max-width: 98vw;
-    min-width: 0;
-    padding: 13px !important;
+    width: 98vw !important;
+    max-width: 98vw !important;
+    min-width: 0 !important;
+    padding: 18px 9px 10px 9px !important;
+    position: relative !important;
+    max-height: 72vh !important;
+    overflow-y: auto !important;
+    box-shadow: none !important;
+  }
+  .modal-content button {
+    position: absolute !important;
+    top: 9px !important;
+    right: 12px !important;
+    font-size: 32px !important;
+    z-index: 10 !important;
+  }
+  .alternativas-panel {
+    border-radius: 0 0 12px 12px !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: 98vw !important;
+    padding: 10px 0 10px 0 !important;
+    box-shadow: none !important;
   }
 }
 
@@ -231,7 +257,6 @@ body {
   background: #00a4e8;
   color: #fff;
 }
-
 @media (max-width: 600px) {
   .paginator button {
     padding: 3px 7px;
@@ -254,12 +279,13 @@ body {
   align-items: center;
   padding: 12px 0 8px 0;
 }
-
 @media (max-width: 600px) {
   .header-sticky {
     padding: 7px 0 3px 0;
   }
 }
+
+/* SearchBar input */
 .search-input {
   width: 100%;
   max-width: 400px;
@@ -276,31 +302,5 @@ body {
     font-size: 15px;
     padding: 10px;
     max-width: 98vw;
-  }
-}
-@media (max-width: 700px) {
-  .modal-flex-row {
-    flex-direction: column !important;
-    max-width: 97vw !important;
-    min-width: 0 !important;
-    width: 97vw !important;
-    border-radius: 12px !important;
-    box-shadow: 0 2px 16px rgba(0,0,0,.13);
-  }
-  .modal-content {
-    border-radius: 12px 12px 0 0 !important;
-    width: 100% !important;
-    max-width: 97vw !important;
-    min-width: 0 !important;
-    padding: 11px !important;
-    box-shadow: none !important;
-  }
-  .alternativas-panel {
-    border-radius: 0 0 12px 12px !important;
-    min-width: 0 !important;
-    width: 100% !important;
-    max-width: 97vw !important;
-    padding: 10px 0 10px 0 !important;
-    box-shadow: none !important;
   }
 }
