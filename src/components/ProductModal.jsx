@@ -7,11 +7,9 @@ export default function ProductModal({ product, onClose, alternativas = [], onAl
   if (!product) return null;
 
   return (
-    <div
-      className="modal-overlay"
-      onClick={onClose}
-    >
+    <div className="modal-overlay" onClick={onClose}>
       <div
+        className="modal-flex-row"
         style={{
           display: "flex",
           flexDirection: "row",
@@ -218,11 +216,13 @@ export default function ProductModal({ product, onClose, alternativas = [], onAl
           width: 30,
           minWidth: 20,
           maxWidth: 40,
-          background: "transparent"
+          background: "transparent",
+          display: "block"
         }} />
 
         {/* PANEL ALTERNATIVAS */}
         <div
+          className="alternativas-panel"
           style={{
             flex: 1,
             minWidth: 340,

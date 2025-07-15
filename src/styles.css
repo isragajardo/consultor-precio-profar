@@ -278,3 +278,29 @@ body {
     max-width: 98vw;
   }
 }
+@media (max-width: 700px) {
+  .modal-flex-row {
+    flex-direction: column !important;
+    max-width: 97vw !important;
+    min-width: 0 !important;
+    width: 97vw !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 16px rgba(0,0,0,.13);
+  }
+  .modal-content {
+    border-radius: 12px 12px 0 0 !important;
+    width: 100% !important;
+    max-width: 97vw !important;
+    min-width: 0 !important;
+    padding: 11px !important;
+    box-shadow: none !important;
+  }
+  .alternativas-panel {
+    border-radius: 0 0 12px 12px !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: 97vw !important;
+    padding: 10px 0 10px 0 !important;
+    box-shadow: none !important;
+  }
+}
