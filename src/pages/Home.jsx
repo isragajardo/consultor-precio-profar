@@ -154,65 +154,70 @@ export default function Home() {
       {/* Layout principal: sidebar + contenido */}
       <div className="main-content">
         {/* Sidebar lateral de filtros */}
-        <aside className="aside-filters">
-          <div className="filters-title">
-            Filtrar por:
-          </div>
-          {/* Filtro Categoría */}
-          <div>
-            <label className="filters-label">Categoría</label>
-            <select
-              value={categoria}
-              onChange={e => setCategoria(e.target.value)}
-              className="filters-select"
-            >
-              <option value="">Todas</option>
-              {categoriasUnicas.map(c => (
-                <option key={c} value={c}>{c}</option>
-              ))}
-            </select>
-          </div>
-          {/* Filtro Laboratorio */}
-          <div>
-            <label className="filters-label">Laboratorio</label>
-            <select
-              value={laboratorio}
-              onChange={e => setLaboratorio(e.target.value)}
-              className="filters-select"
-            >
-              <option value="">Todos</option>
-              {laboratoriosUnicos.map(l => (
-                <option key={l} value={l}>{l}</option>
-              ))}
-            </select>
-          </div>
-          {/* Filtro Precio */}
-          <div>
-            <label className="filters-label">Precio</label>
-            <select
-              value={ordenPrecio}
-              onChange={e => setOrdenPrecio(e.target.value)}
-              className="filters-select"
-            >
-              <option value="">Cualquiera</option>
-              <option value="asc">Menor a mayor</option>
-              <option value="desc">Mayor a menor</option>
-            </select>
-          </div>
-          {/* Botón limpiar */}
-          {(categoria || laboratorio || ordenPrecio) && (
-            <button
-              className="filters-clear"
-              onClick={() => {
-                setCategoria("");
-                setLaboratorio("");
-                setOrdenPrecio("");
-              }}
-            >
-              Limpiar filtros
-            </button>
-          )}
-        </aside>
+<aside className="aside-filters">
+  <div className="filters-title">
+    Filtrar por:
+  </div>
+
+  {/* Filtro Categoría */}
+  <div>
+    <label className="filters-label">Categoría</label>
+    <select
+      value={categoria}
+      onChange={e => setCategoria(e.target.value)}
+      className="filters-select"
+    >
+      <option value="">Todas</option>
+      {categoriasUnicas.map(c => (
+        <option key={c} value={c}>{c}</option>
+      ))}
+    </select>
+  </div>
+
+  {/* Filtro Laboratorio */}
+  <div>
+    <label className="filters-label">Laboratorio</label>
+    <select
+      value={laboratorio}
+      onChange={e => setLaboratorio(e.target.value)}
+      className="filters-select"
+    >
+      <option value="">Todos</option>
+      {laboratoriosUnicos.map(l => (
+        <option key={l} value={l}>{l}</option>
+      ))}
+    </select>
+  </div>
+
+  {/* Filtro Precio */}
+  <div>
+    <label className="filters-label">Precio</label>
+    <select
+      value={ordenPrecio}
+      onChange={e => setOrdenPrecio(e.target.value)}
+      className="filters-select"
+    >
+      <option value="">Cualquiera</option>
+      <option value="asc">Menor a mayor</option>
+      <option value="desc">Mayor a menor</option>
+    </select>
+  </div>
+
+  {/* Botón limpiar */}
+  {(categoria || laboratorio || ordenPrecio) && (
+    <button
+      className="filters-clear"
+      onClick={() => {
+        setCategoria("");
+        setLaboratorio("");
+        setOrdenPrecio("");
+      }}
+    >
+      Limpiar filtros
+    </button>
+  )}
+</aside>
+
         {/* Contenido principal */}
         <div style={{
           flex: 1,
