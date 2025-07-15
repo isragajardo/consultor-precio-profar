@@ -104,7 +104,6 @@ export default function Home() {
   }, [query, categoria, laboratorio, ordenPrecio]);
 
   // ---- Alternativas para modal ----
-  // Memoriza la función para evitar rerender innecesario
   const findAlternativas = useCallback(
     (baseProduct) => {
       if (!baseProduct || !baseProduct.principioActivo) return [];
@@ -119,7 +118,6 @@ export default function Home() {
     [products]
   );
 
-  // Permite actualizar el modal con una alternativa al hacer click
   const [modalAlternativas, setModalAlternativas] = useState([]);
   useEffect(() => {
     if (modalProduct) {
@@ -129,10 +127,9 @@ export default function Home() {
     }
   }, [modalProduct, findAlternativas]);
 
-  // Maneja click en alternativa
   const handleAlternativeClick = (altProduct) => {
     setModalProduct(altProduct);
-    setTimeout(() => window.scrollTo(0, 0), 100); // opcional: subir arriba al cambiar modal
+    setTimeout(() => window.scrollTo(0, 0), 100);
   };
 
   return (
@@ -158,24 +155,16 @@ export default function Home() {
       <div className="main-content">
         {/* Sidebar lateral de filtros */}
         <aside className="aside-filters">
-          <div style={{ fontWeight: 700, fontSize: 18, marginBottom: 10, color: "#238" }}>
+          <div className="filters-title">
             Filtrar por:
           </div>
           {/* Filtro Categoría */}
           <div>
-            <label style={{ fontWeight: 600, color: "#007bbd", fontSize: 15, marginBottom: 4, display: "block" }}>Categoría</label>
+            <label className="filters-label">Categoría</label>
             <select
               value={categoria}
               onChange={e => setCategoria(e.target.value)}
-              style={{
-                width: "100%",
-                padding: "7px 9px",
-                borderRadius: 6,
-                border: "1px solid #00a4e8",
-                fontSize: 15,
-                marginTop: 4,
-                marginBottom: 7,
-              }}
+              className="filters-select"
             >
               <option value="">Todas</option>
               {categoriasUnicas.map(c => (
@@ -185,19 +174,11 @@ export default function Home() {
           </div>
           {/* Filtro Laboratorio */}
           <div>
-            <label style={{ fontWeight: 600, color: "#007bbd", fontSize: 15, marginBottom: 4, display: "block" }}>Laboratorio</label>
+            <label className="filters-label">Laboratorio</label>
             <select
               value={laboratorio}
               onChange={e => setLaboratorio(e.target.value)}
-              style={{
-                width: "100%",
-                padding: "7px 9px",
-                borderRadius: 6,
-                border: "1px solid #00a4e8",
-                fontSize: 15,
-                marginTop: 4,
-                marginBottom: 7,
-              }}
+              className="filters-select"
             >
               <option value="">Todos</option>
               {laboratoriosUnicos.map(l => (
@@ -207,19 +188,11 @@ export default function Home() {
           </div>
           {/* Filtro Precio */}
           <div>
-            <label style={{ fontWeight: 600, color: "#007bbd", fontSize: 15, marginBottom: 4, display: "block" }}>Precio</label>
+            <label className="filters-label">Precio</label>
             <select
               value={ordenPrecio}
               onChange={e => setOrdenPrecio(e.target.value)}
-              style={{
-                width: "100%",
-                padding: "7px 9px",
-                borderRadius: 6,
-                border: "1px solid #00a4e8",
-                fontSize: 15,
-                marginTop: 4,
-                marginBottom: 7,
-              }}
+              className="filters-select"
             >
               <option value="">Cualquiera</option>
               <option value="asc">Menor a mayor</option>
@@ -229,18 +202,7 @@ export default function Home() {
           {/* Botón limpiar */}
           {(categoria || laboratorio || ordenPrecio) && (
             <button
-              style={{
-                marginTop: 8,
-                width: "100%",
-                padding: "8px 0",
-                borderRadius: 7,
-                background: "#e0eaf7",
-                border: "none",
-                color: "#007bbd",
-                fontSize: 15,
-                fontWeight: 700,
-                cursor: "pointer"
-              }}
+              className="filters-clear"
               onClick={() => {
                 setCategoria("");
                 setLaboratorio("");
