@@ -17,26 +17,21 @@ function filterProducts(products, query) {
   );
 }
 
-// Orden personalizado para nombre y prioridad visual
 function sortProducts(a, b) {
   function group(prod) {
     if (!prod.nombreFantasia || prod.nombreFantasia.length === 0) return 3;
     const first = prod.nombreFantasia.trim()[0];
     if (/^[a-zA-Z]$/.test(first)) return 0; // Letras
     if (/^\d$/.test(first)) return 1;       // Números
-    return 2;                               // Otros (paréntesis, *, etc)
+    return 2;                               // Otros
   }
   const gA = group(a);
   const gB = group(b);
   if (gA !== gB) return gA - gB;
-
-  // Imagen presente (los que no tienen imagen al final)
   const hasImgA = !!a.imagen;
   const hasImgB = !!b.imagen;
   if (!hasImgA && hasImgB) return 1;
   if (hasImgA && !hasImgB) return -1;
-
-  // Alfabético
   if (!a.nombreFantasia) return 1;
   if (!b.nombreFantasia) return -1;
   return a.nombreFantasia.localeCompare(b.nombreFantasia, "es", { sensitivity: "base" });
@@ -49,10 +44,21 @@ export default function Home() {
   const [claimModalOpen, setClaimModalOpen] = useState(false);
   const [page, setPage] = useState(1);
 
-  // Nuevos estados para filtros
+  // Filtros
   const [categoria, setCategoria] = useState("");
   const [laboratorio, setLaboratorio] = useState("");
   const [ordenPrecio, setOrdenPrecio] = useState(""); // "asc", "desc" o ""
+
+  // Estado de visibilidad de filtros (plegable)
+  const [showFilters, setShowFilters] = useState(window.innerWidth > 1400);
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 1400) setShowFilters(true);
+      else setShowFilters(false);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     fetch("productosProfar.json")
@@ -84,13 +90,12 @@ export default function Home() {
     [products]
   );
 
-  // Aplicar todos los filtros
+  // Aplicar filtros
   let filtered = filterProducts(products, query)
     .filter(p => !p.descontinuado)
     .filter(p => !categoria || p.categoria === categoria)
     .filter(p => !laboratorio || p.laboratorio === laboratorio);
 
-  // Ordenar por precio si corresponde
   if (ordenPrecio === "asc") filtered = [...filtered].sort((a, b) => (a.precioTotal || 0) - (b.precioTotal || 0));
   else if (ordenPrecio === "desc") filtered = [...filtered].sort((a, b) => (b.precioTotal || 0) - (a.precioTotal || 0));
   else filtered = filtered.sort(sortProducts);
@@ -98,12 +103,9 @@ export default function Home() {
   const pageCount = Math.ceil(filtered.length / PAGE_SIZE);
   const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
-  // Reset de página si cambian los filtros o búsqueda
-  useEffect(() => {
-    setPage(1);
-  }, [query, categoria, laboratorio, ordenPrecio]);
+  useEffect(() => { setPage(1); }, [query, categoria, laboratorio, ordenPrecio]);
 
-  // ---- Alternativas para modal ----
+  // Alternativas para modal
   const findAlternativas = useCallback(
     (baseProduct) => {
       if (!baseProduct || !baseProduct.principioActivo) return [];
@@ -117,14 +119,10 @@ export default function Home() {
     },
     [products]
   );
-
   const [modalAlternativas, setModalAlternativas] = useState([]);
   useEffect(() => {
-    if (modalProduct) {
-      setModalAlternativas(findAlternativas(modalProduct));
-    } else {
-      setModalAlternativas([]);
-    }
+    if (modalProduct) setModalAlternativas(findAlternativas(modalProduct));
+    else setModalAlternativas([]);
   }, [modalProduct, findAlternativas]);
 
   const handleAlternativeClick = (altProduct) => {
@@ -136,11 +134,7 @@ export default function Home() {
     <div className="App">
       {/* HEADER sticky arriba */}
       <div className="header-sticky">
-        <img
-          src="logo.png"
-          className="logo-header"
-          alt="Profar Consultor"
-        />
+        <img src="logo.png" className="logo-header" alt="Profar Consultor" />
         <div style={{ width: "100%", maxWidth: 500, margin: "0 auto" }}>
           <SearchBar
             value={query}
@@ -151,73 +145,85 @@ export default function Home() {
           />
         </div>
       </div>
-      {/* Layout principal: sidebar + contenido */}
+      {/* Botón de mostrar filtros */}
+      {!showFilters && (
+        <button className="toggle-filters" onClick={() => setShowFilters(true)}>
+          &#9776; Filtros
+        </button>
+      )}
       <div className="main-content">
         {/* Sidebar lateral de filtros */}
-<aside className="aside-filters">
-  <div className="filters-title">
-    Filtrar por:
-  </div>
-
-  {/* Filtro Categoría */}
-  <div>
-    <label className="filters-label">Categoría</label>
-    <select
-      value={categoria}
-      onChange={e => setCategoria(e.target.value)}
-      className="filters-select"
-    >
-      <option value="">Todas</option>
-      {categoriasUnicas.map(c => (
-        <option key={c} value={c}>{c}</option>
-      ))}
-    </select>
-  </div>
-
-  {/* Filtro Laboratorio */}
-  <div>
-    <label className="filters-label">Laboratorio</label>
-    <select
-      value={laboratorio}
-      onChange={e => setLaboratorio(e.target.value)}
-      className="filters-select"
-    >
-      <option value="">Todos</option>
-      {laboratoriosUnicos.map(l => (
-        <option key={l} value={l}>{l}</option>
-      ))}
-    </select>
-  </div>
-
-  {/* Filtro Precio */}
-  <div>
-    <label className="filters-label">Precio</label>
-    <select
-      value={ordenPrecio}
-      onChange={e => setOrdenPrecio(e.target.value)}
-      className="filters-select"
-    >
-      <option value="">Cualquiera</option>
-      <option value="asc">Menor a mayor</option>
-      <option value="desc">Mayor a menor</option>
-    </select>
-  </div>
-
-  {/* Botón limpiar */}
-  {(categoria || laboratorio || ordenPrecio) && (
-    <button
-      className="filters-clear"
-      onClick={() => {
-        setCategoria("");
-        setLaboratorio("");
-        setOrdenPrecio("");
-      }}
-    >
-      Limpiar filtros
-    </button>
-  )}
-</aside>
-
+        {showFilters && (
+          <aside className="aside-filters">
+            <button
+              className="close-filters"
+              onClick={() => setShowFilters(false)}
+              title="Cerrar filtros"
+              style={{
+                display: window.innerWidth > 1400 ? "none" : "block",
+                alignSelf: 'flex-end',
+                marginBottom: 8,
+              }}
+            >×</button>
+            <div className="filters-title">
+              Filtrar por:
+            </div>
+            {/* Filtro Categoría */}
+            <div>
+              <label className="filters-label">Categoría</label>
+              <select
+                value={categoria}
+                onChange={e => setCategoria(e.target.value)}
+                className="filters-select"
+              >
+                <option value="">Todas</option>
+                {categoriasUnicas.map(c => (
+                  <option key={c} value={c}>{c}</option>
+                ))}
+              </select>
+            </div>
+            {/* Filtro Laboratorio */}
+            <div>
+              <label className="filters-label">Laboratorio</label>
+              <select
+                value={laboratorio}
+                onChange={e => setLaboratorio(e.target.value)}
+                className="filters-select"
+              >
+                <option value="">Todos</option>
+                {laboratoriosUnicos.map(l => (
+                  <option key={l} value={l}>{l}</option>
+                ))}
+              </select>
+            </div>
+            {/* Filtro Precio */}
+            <div>
+              <label className="filters-label">Precio</label>
+              <select
+                value={ordenPrecio}
+                onChange={e => setOrdenPrecio(e.target.value)}
+                className="filters-select"
+              >
+                <option value="">Cualquiera</option>
+                <option value="asc">Menor a mayor</option>
+                <option value="desc">Mayor a menor</option>
+              </select>
+            </div>
+            {/* Botón limpiar */}
+            {(categoria || laboratorio || ordenPrecio) && (
+              <button
+                className="filters-clear"
+                onClick={() => {
+                  setCategoria("");
+                  setLaboratorio("");
+                  setOrdenPrecio("");
+                }}
+              >
+                Limpiar filtros
+              </button>
+            )}
+          </aside>
+        )}
         {/* Contenido principal */}
         <div style={{
           flex: 1,
@@ -289,7 +295,6 @@ export default function Home() {
           viewBox="0 0 24 24"
           style={{ marginRight: 14 }}
         >
-          {/* Ícono tipo megáfono o comentario */}
           <path
             d="M17.293 2.293A1 1 0 0 1 18 2h1a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3h-3.382l-3.447 2.724A1 1 0 0 1 10 19v-1h-1a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3h8a1 1 0 0 1 .707.293z"
             fill="#fff"
