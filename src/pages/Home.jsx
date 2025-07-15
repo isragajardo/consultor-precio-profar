@@ -224,7 +224,7 @@ export default function Home() {
       <div className="main-content">
         <div style={{
           flex: 1,
-          padding: "36px 0 0 0",
+          padding: "5px 0 0 0",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
