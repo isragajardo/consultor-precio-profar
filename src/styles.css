@@ -26,7 +26,6 @@ body {
 .logo-header {
   width: 200px;
   display: block;
-  margin: 22px auto 0 auto;
 }
 @media (max-width: 600px) {
   .logo-header {
